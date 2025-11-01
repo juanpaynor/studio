@@ -9,8 +9,8 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   // Performance optimizations
+  // Removed optimizeCss to avoid critters dependency issue on Netlify
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
   // Image optimization
