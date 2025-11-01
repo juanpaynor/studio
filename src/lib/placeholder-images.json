@@ -1,3 +1,76 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "1",
+      "description": "A classic grilled cheese sandwich.",
+      "imageUrl": "https://images.unsplash.com/photo-1634598603851-1c2987de821f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxncmlsbGVkJTIwY2hlZXNlfGVufDB8fHx8MTc2MTk4OTE2Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "grilled cheese"
+    },
+    {
+      "id": "2",
+      "description": "A gourmet grilled cheese with bacon.",
+      "imageUrl": "https://images.unsplash.com/photo-1667591862188-4df61ee88053?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxiYWNvbiUyMHNhbmR3aWNofGVufDB8fHx8MTc2MTk4OTg1NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "bacon sandwich"
+    },
+    {
+      "id": "3",
+      "description": "A spicy jalapeno popper grilled cheese.",
+      "imageUrl": "https://images.unsplash.com/photo-1628328726811-c448839a7dd5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8c3BpY3klMjBzYW5kd2ljaHxlbnwwfHx8fDE3NjE5ODk4NTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "spicy sandwich"
+    },
+    {
+      "id": "4",
+      "description": "A cup of creamy tomato soup.",
+      "imageUrl": "https://images.unsplash.com/photo-1620418025834-f4379baf1de9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHx0b21hdG8lMjBzb3VwfGVufDB8fHx8MTc2MTk2NzAzM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tomato soup"
+    },
+    {
+      "id": "5",
+      "description": "A side of crispy french fries.",
+      "imageUrl": "https://images.unsplash.com/photo-1606755456206-b25206cde27e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmcmVuY2glMjBmcmllc3xlbnwwfHx8fDE3NjE5MTIyMzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "french fries"
+    },
+    {
+      "id": "6",
+      "description": "A side of golden onion rings.",
+      "imageUrl": "https://images.unsplash.com/photo-1645066803695-f0dbe2c33e42?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxvbmlvbiUyMHJpbmdzfGVufDB8fHx8MTc2MTk4OTg1NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "onion rings"
+    },
+    {
+      "id": "7",
+      "description": "A refreshing can of cola.",
+      "imageUrl": "https://images.unsplash.com/photo-1696739696220-8d2e27465662?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzb2RhJTIwY2FufGVufDB8fHx8MTc2MTk0MTExN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "soda can"
+    },
+    {
+      "id": "8",
+      "description": "A bottle of fresh lemonade.",
+      "imageUrl": "https://images.unsplash.com/photo-1739138056344-3c852f4efc28?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxsZW1vbmFkZSUyMGJvdHRsZXxlbnwwfHx8fDE3NjE5ODk4NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "lemonade bottle"
+    },
+    {
+      "id": "9",
+      "description": "A bottle of water.",
+      "imageUrl": "https://images.unsplash.com/photo-1616118133712-8c947f7b822c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHx3YXRlciUyMGJvdHRsZXxlbnwwfHx8fDE3NjE5MTI4MzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "water bottle"
+    },
+    {
+      "id": "10",
+      "description": "A vegetarian grilled cheese with avocado and tomato.",
+      "imageUrl": "https://images.unsplash.com/photo-1655279562015-047c3da9a271?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx2ZWdnaWUlMjBzYW5kd2ljaHxlbnwwfHx8fDE3NjE5ODk4NTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "veggie sandwich"
+    },
+    {
+      "id": "11",
+      "description": "A side of mozzarella sticks.",
+      "imageUrl": "https://images.unsplash.com/photo-1636617547919-59fc96a2abec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxtb3p6YXJlbGxhJTIwc3RpY2tzfGVufDB8fHx8MTc2MTk4OTg1NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "mozzarella sticks"
+    },
+    {
+      "id": "12",
+      "description": "A glass of iced tea.",
+      "imageUrl": "https://images.unsplash.com/photo-1596343540266-130b3dbb1158?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpY2VkJTIwdGVhfGVufDB8fHx8MTc2MTk4NzgxMnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "iced tea"
+    }
+  ]
 }
