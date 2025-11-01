@@ -11,7 +11,6 @@ import PosHeader from '@/components/pos/PosHeader';
 import CategoryTabs from '@/components/pos/CategoryTabs';
 import ProductGrid from '@/components/pos/ProductGrid';
 import OrderSummary from '@/components/pos/OrderSummary';
-import AISuggestions from '@/components/pos/AISuggestions';
 
 // Enhanced cache with better management
 let cachedProducts: Product[] | null = null;
@@ -98,10 +97,7 @@ export default function PosPage() {
               <ProductGrid products={filteredProducts} />
             </div>
             <aside className="w-full max-w-sm flex-shrink-0 border-l border-border bg-card shadow-lg">
-              <div className="flex h-full flex-col">
-                <OrderSummary />
-                <AISuggestions />
-              </div>
+              <OrderSummary />
             </aside>
           </main>
         </div>

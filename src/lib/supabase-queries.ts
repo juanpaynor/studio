@@ -179,44 +179,48 @@ export async function createOrder(
   items: OrderItem[],
   paymentMethod: 'cash' | 'digital',
   amountTendered?: number
-): Promise<{ orderId: string; orderNumber: string } | null> {
+): Promise<{ orderId: string; orderNumber: string; saleId: string; receiptNumber: string; receiptData: any } | null> {
   try {
     const itemsData = items.map(item => ({
       product_id: item.product.id,
       quantity: item.quantity
     }))
 
-    const { data, error } = await supabase.rpc('create_order', {
-      customer_name: customerName,
-      items: itemsData,
-      payment_method: paymentMethod,
-      amount_tendered: amountTendered
+    console.log('Calling create_order_with_sale with:', {
+      p_customer: customerName,
+      p_items: itemsData,
+      p_payment: paymentMethod,
+      p_tendered: amountTendered
+    });
+
+    const { data, error } = await supabase.rpc('create_order_with_sale', {
+      p_customer: customerName,
+      p_items: itemsData,
+      p_payment: paymentMethod,
+      p_tendered: amountTendered
     })
 
     if (error) {
-      console.error('Error creating order:', error)
-      return null
+      console.error('Error creating order with sale:', error)
+      throw new Error(`Database error: ${error.message || error.details || JSON.stringify(error)}`)
     }
 
-    // Get the order details to return order number
-    const { data: orderData, error: fetchError } = await supabase
-      .from('orders')
-      .select('order_number')
-      .eq('id', data)
-      .single()
-
-    if (fetchError) {
-      console.error('Error fetching order details:', fetchError)
-      return null
+    if (!data) {
+      throw new Error('No data returned from create_order_with_sale function')
     }
+
+    console.log('Order created successfully:', data);
 
     return {
-      orderId: data,
-      orderNumber: orderData.order_number
+      orderId: data.order_id,
+      orderNumber: data.order_number,
+      saleId: data.sale_id,
+      receiptNumber: data.receipt_number,
+      receiptData: data.receipt_data
     }
   } catch (error) {
     console.error('Error in createOrder:', error)
-    return null
+    throw error
   }
 }
 
@@ -392,4 +396,110 @@ export function clearAllCache(): void {
 
 export function clearProductCache(): void {
   invalidateCache('products');
+}
+
+// Sales functions
+export async function getSalesReport(startDate?: string, endDate?: string, cashierId?: string) {
+  const { data, error } = await supabase.rpc('get_sales_report', {
+    start_date: startDate || null,
+    end_date: endDate || null,
+    cashier_id: cashierId || null
+  });
+
+  if (error) {
+    console.error('Error fetching sales report:', error);
+    throw error;
+  }
+
+  return data || [];
+}
+
+export async function getSaleById(saleId: string) {
+  const { data, error } = await supabase
+    .from('sales')
+    .select(`
+      *,
+      sales_items (
+        *,
+        products (name, category)
+      )
+    `)
+    .eq('id', saleId)
+    .single();
+
+  if (error) {
+    console.error('Error fetching sale:', error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function getSaleByReceiptNumber(receiptNumber: string) {
+  const { data, error } = await supabase
+    .from('sales')
+    .select(`
+      *,
+      sales_items (
+        *,
+        products (name, category)
+      )
+    `)
+    .eq('receipt_number', receiptNumber)
+    .single();
+
+  if (error) {
+    console.error('Error fetching sale by receipt number:', error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function markReceiptPrinted(saleId: string): Promise<boolean> {
+  const { error } = await supabase.rpc('mark_receipt_printed', {
+    p_sale_id: saleId
+  });
+
+  if (error) {
+    console.error('Error marking receipt as printed:', error);
+    return false;
+  }
+
+  return true;
+}
+
+export async function getTodaysSales() {
+  const today = new Date();
+  const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate()).toISOString();
+  const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1).toISOString();
+
+  return getSalesReport(startOfDay, endOfDay);
+}
+
+export async function getSalesAnalytics(startDate?: string, endDate?: string) {
+  const { data, error } = await supabase
+    .from('sales')
+    .select(`
+      id,
+      total,
+      sale_date,
+      payment_method,
+      sales_items (
+        quantity,
+        unit_price,
+        product_name,
+        product_category
+      )
+    `)
+    .gte('sale_date', startDate || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
+    .lte('sale_date', endDate || new Date().toISOString())
+    .order('sale_date', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching sales analytics:', error);
+    throw error;
+  }
+
+  return data || [];
 }

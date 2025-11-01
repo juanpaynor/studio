@@ -84,7 +84,6 @@ export default function OrderSummary() {
     removeItem,
     setCustomerName,
     subtotal,
-    tax,
     total,
   } = useOrder();
 
@@ -140,10 +139,6 @@ export default function OrderSummary() {
           <div className="flex justify-between">
             <span>Subtotal</span>
             <span>{formatCurrency(subtotal)}</span>
-          </div>
-          <div className="flex justify-between text-muted-foreground">
-            <span>Tax (8%)</span>
-            <span>{formatCurrency(tax)}</span>
           </div>
           <Separator />
           <div className="flex justify-between font-bold">

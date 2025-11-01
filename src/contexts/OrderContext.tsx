@@ -5,8 +5,6 @@ import type { OrderItem, Product } from '@/lib/types';
 import { useToast } from "@/hooks/use-toast";
 import { formatCurrency, generateOrderNumber } from '@/lib/utils';
 
-const TAX_RATE = 0.08;
-
 interface OrderContextType {
   orderItems: OrderItem[];
   customerName: string;
@@ -19,7 +17,6 @@ interface OrderContextType {
   clearOrder: () => void;
   setSubmitting: (submitting: boolean) => void;
   subtotal: number;
-  tax: number;
   total: number;
 }
 
@@ -91,16 +88,14 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
     setIsSubmitting(submitting);
   }, []);
 
-  const { subtotal, tax, total } = useMemo(() => {
+  const { subtotal, total } = useMemo(() => {
     const subtotal = orderItems.reduce(
       (acc, item) => acc + item.product.price * item.quantity,
       0
     );
-    const tax = subtotal * TAX_RATE;
-    const total = subtotal + tax;
+    const total = subtotal; // No tax calculation
     return { 
       subtotal: Number(subtotal.toFixed(2)), 
-      tax: Number(tax.toFixed(2)), 
       total: Number(total.toFixed(2)) 
     };
   }, [orderItems]);
@@ -117,7 +112,6 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
     clearOrder,
     setSubmitting,
     subtotal,
-    tax,
     total,
   }), [
     orderItems,
@@ -130,7 +124,6 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
     clearOrder,
     setSubmitting,
     subtotal,
-    tax,
     total,
   ]);
 
