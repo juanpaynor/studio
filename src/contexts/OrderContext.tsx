@@ -1,17 +1,23 @@
 'use client';
 
-import React, { createContext, useContext, useState, useMemo } from 'react';
+import React, { createContext, useContext, useState, useMemo, useCallback } from 'react';
 import type { OrderItem, Product } from '@/lib/types';
 import { useToast } from "@/hooks/use-toast";
+import { formatCurrency, generateOrderNumber } from '@/lib/utils';
 
 const TAX_RATE = 0.08;
 
 interface OrderContextType {
   orderItems: OrderItem[];
+  customerName: string;
+  orderNumber: string;
+  isSubmitting: boolean;
   addItem: (product: Product) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
+  setCustomerName: (name: string) => void;
   clearOrder: () => void;
+  setSubmitting: (submitting: boolean) => void;
   subtotal: number;
   tax: number;
   total: number;
@@ -21,9 +27,23 @@ const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
 export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
+  const [customerName, setCustomerName] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [orderCount] = useState(4); // In real app, this would come from database
   const { toast } = useToast();
 
-  const addItem = (product: Product) => {
+  const orderNumber = useMemo(() => generateOrderNumber(orderCount), [orderCount]);
+
+  const addItem = useCallback((product: Product) => {
+    if (!product.isAvailable) {
+      toast({
+        title: "Item not available",
+        description: `${product.name} is currently unavailable.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setOrderItems((prevItems) => {
       const existingItem = prevItems.find(
         (item) => item.product.id === product.id
@@ -41,15 +61,15 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
         title: `${product.name} added to order!`,
         description: "You can adjust the quantity in the order summary.",
     });
-  };
+  }, [toast]);
 
-  const removeItem = (productId: string) => {
+  const removeItem = useCallback((productId: string) => {
     setOrderItems((prevItems) =>
       prevItems.filter((item) => item.product.id !== productId)
     );
-  };
+  }, []);
 
-  const updateQuantity = (productId: string, quantity: number) => {
+  const updateQuantity = useCallback((productId: string, quantity: number) => {
     if (quantity <= 0) {
       removeItem(productId);
       return;
@@ -59,11 +79,17 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
         item.product.id === productId ? { ...item, quantity } : item
       )
     );
-  };
+  }, [removeItem]);
 
-  const clearOrder = () => {
+  const clearOrder = useCallback(() => {
     setOrderItems([]);
-  };
+    setCustomerName('');
+    setIsSubmitting(false);
+  }, []);
+
+  const setSubmitting = useCallback((submitting: boolean) => {
+    setIsSubmitting(submitting);
+  }, []);
 
   const { subtotal, tax, total } = useMemo(() => {
     const subtotal = orderItems.reduce(
@@ -72,22 +98,44 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
     );
     const tax = subtotal * TAX_RATE;
     const total = subtotal + tax;
-    return { subtotal, tax, total };
+    return { 
+      subtotal: Number(subtotal.toFixed(2)), 
+      tax: Number(tax.toFixed(2)), 
+      total: Number(total.toFixed(2)) 
+    };
   }, [orderItems]);
 
+  const value = useMemo(() => ({
+    orderItems,
+    customerName,
+    orderNumber,
+    isSubmitting,
+    addItem,
+    removeItem,
+    updateQuantity,
+    setCustomerName,
+    clearOrder,
+    setSubmitting,
+    subtotal,
+    tax,
+    total,
+  }), [
+    orderItems,
+    customerName,
+    orderNumber,
+    isSubmitting,
+    addItem,
+    removeItem,
+    updateQuantity,
+    clearOrder,
+    setSubmitting,
+    subtotal,
+    tax,
+    total,
+  ]);
+
   return (
-    <OrderContext.Provider
-      value={{
-        orderItems,
-        addItem,
-        removeItem,
-        updateQuantity,
-        clearOrder,
-        subtotal,
-        tax,
-        total,
-      }}
-    >
+    <OrderContext.Provider value={value}>
       {children}
     </OrderContext.Provider>
   );

@@ -16,8 +16,10 @@ import {
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { CheeseIcon } from '@/components/icons/CheeseIcon';
-import { LayoutGrid, BarChart3, LogOut, Home } from 'lucide-react';
+import { LayoutGrid, BarChart3, LogOut, Home, Settings } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import { useSettings } from '@/contexts/SettingsContext';
+import Image from 'next/image';
 
 export default function AdminLayout({
   children,
@@ -25,15 +27,27 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const { settings } = useSettings();
 
   return (
     <SidebarProvider>
       <Sidebar>
         <SidebarHeader className="border-b">
           <Link href="/" className="flex items-center gap-2">
-            <CheeseIcon className="h-8 w-8 text-primary" />
+            {settings.logo_url ? (
+              <div className="h-8 w-8 relative">
+                <Image
+                  src={settings.logo_url}
+                  alt={settings.logo_alt || 'Logo'}
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            ) : (
+              <CheeseIcon className="h-8 w-8 text-primary" />
+            )}
             <span className="font-headline text-xl font-bold tracking-tight">
-              Ms. Cheesy
+              {settings.business_name || 'Ms. Cheesy'}
             </span>
           </Link>
         </SidebarHeader>
@@ -60,6 +74,18 @@ export default function AdminLayout({
                 <Link href="/admin/sales">
                   <BarChart3 />
                   <span>Sales</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname.startsWith('/admin/settings')}
+                tooltip="Settings"
+              >
+                <Link href="/admin/settings">
+                  <Settings />
+                  <span>Settings</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

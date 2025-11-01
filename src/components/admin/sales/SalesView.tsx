@@ -9,6 +9,7 @@ import { format, startOfWeek, startOfMonth, getWeek, getMonth, getYear } from 'd
 import { Button } from '@/components/ui/button';
 import { Download } from 'lucide-react';
 import { downloadSalesCSV } from '@/lib/actions';
+import { formatCurrency } from '@/lib/utils';
 
 type Period = 'daily' | 'weekly' | 'monthly';
 
@@ -63,7 +64,7 @@ export function SalesView({ period }: SalesViewProps) {
             <div>
                 <CardTitle className="capitalize">{period} Sales</CardTitle>
                 <CardDescription>
-                    Total sales for this period: ${totalSales.toFixed(2)}
+                    Total sales for this period: {formatCurrency(totalSales)}
                 </CardDescription>
             </div>
             <Button onClick={handleDownload} variant="outline" size="sm">

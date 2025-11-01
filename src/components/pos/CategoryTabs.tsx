@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Sandwich, Soup, GlassWater } from 'lucide-react';
 
@@ -18,6 +19,20 @@ export default function CategoryTabs({
   selectedCategory,
   onSelectCategory,
 }: CategoryTabsProps) {
+  // Memoize the tabs to prevent re-renders
+  const tabTriggers = React.useMemo(() => {
+    return categories.map((category) => (
+      <TabsTrigger
+        key={category}
+        value={category}
+        className="flex items-center text-base"
+      >
+        {categoryIcons[category]}
+        {category}
+      </TabsTrigger>
+    ));
+  }, [categories]);
+
   return (
     <div className="mb-4">
       <Tabs
@@ -26,16 +41,7 @@ export default function CategoryTabs({
         className="w-full"
       >
         <TabsList className="grid w-full grid-cols-3">
-          {categories.map((category) => (
-            <TabsTrigger
-              key={category}
-              value={category}
-              className="flex items-center text-base"
-            >
-              {categoryIcons[category]}
-              {category}
-            </TabsTrigger>
-          ))}
+          {tabTriggers}
         </TabsList>
       </Tabs>
     </div>

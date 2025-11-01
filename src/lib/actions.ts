@@ -1,8 +1,9 @@
 'use client';
 import type { SalesData } from './types';
+import { formatCurrency } from './utils';
 
 function convertToCSV(data: SalesData[]): string {
-  const header = ['Date', 'Sales'];
+  const header = ['Date', 'Sales (PHP)'];
   const rows = data.map(row => [row.date, row.sales.toFixed(2)]);
   
   return [
